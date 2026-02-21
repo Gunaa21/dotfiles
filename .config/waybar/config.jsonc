@@ -1,0 +1,131 @@
+{
+    "layer": "top",
+    "position": "top",
+    "height": 35,
+    "spacing": 4,
+
+    "modules-left": ["hyprland/workspaces"],
+    "modules-center": ["clock"],
+    "modules-right": [
+        "cpu",
+        "memory",
+        "network",
+        "bluetooth",
+        "pulseaudio",
+        "pulseaudio/slider",
+        "backlight",
+        "backlight/slider",
+        "battery"
+    ],
+
+    // ── Workspaces ──────────────────────────────────────
+    "hyprland/workspaces": {
+        "format": "{icon}",
+        "format-icons": {
+            "active":  "󰮯",
+            "default": "󰊠",
+            "empty":   "󰊠"
+        },
+        "on-click": "activate"
+    },
+
+    // ── Clock ───────────────────────────────────────────
+    "clock": {
+        "format": "󰥔 {:%H:%M}",
+        "format-alt": "󰸗 {:%A, %B %d, %Y  %H:%M}",
+        "tooltip-format": "<tt>{calendar}</tt>"
+    },
+
+    // ── CPU ─────────────────────────────────────────────
+    "cpu": {
+        "interval": 2,
+        "format": "󰍛 CPU {usage}%",
+        "tooltip": true,
+        "states": {
+            "warning":  70,
+            "critical": 90
+        }
+    },
+
+    // ── Memory ──────────────────────────────────────────
+    "memory": {
+        "interval": 5,
+        "format": "󰘚 RAM {used:0.1f}G",
+        "tooltip-format": "RAM: {used:0.1f}G / {total:0.1f}G\nSwap: {swapUsed:0.1f}G / {swapTotal:0.1f}G",
+        "states": {
+            "warning":  75,
+            "critical": 90
+        }
+    },
+
+    // ── Network ─────────────────────────────────────────
+    "network": {
+	"interface": "wlp4s0",
+	"format-wifi": "󰤨 {essid} {signalStrength}%",
+	"format-ethernet": "󰊗 {ipaddr}",
+	"format-disconnected": "󰖪 Offline",
+	"on-click": "~/.config/hypr/scripts/rofi-wifi.sh",
+	"tooltip-format-wifi": "SSID: {essid}\nSignal: {signalStrength}%\nIP: {ipaddr}",
+	"max-length": 40
+    },
+    // ── Bluetooth ───────────────────────────────────────
+    "bluetooth": {
+	"format": "󰂯 BT {status}",
+	"format-disabled": "󰂲 BT off",
+	"format-connected": "󰂱 BT {num_connections}",
+	"on-click": "~/.config/hypr/scripts/rofi-bluetooth.sh",
+	"tooltip-format": "{controller_alias}  {controller_address}",
+	"tooltip-format-connected": "{controller_alias}\n\n{device_enumerate}"
+    },
+    // ── Volume label ────────────────────────────────────
+    "pulseaudio": {
+        "format": "{icon} {volume}%",
+        "format-muted": "󰝟 Muted",
+        "format-bluetooth": "󰥰 {volume}%",
+        "format-icons": {
+            "headphone":  "󰋋",
+            "headset":    "󰋎",
+            "default":    ["󰕿", "󰖀", "󰕾"]
+        },
+        "scroll-step": 2,
+        "on-click": "pavucontrol",
+        "tooltip": false
+    },
+
+    // ── Volume slider ───────────────────────────────────
+    "pulseaudio/slider": {
+        "min": 0,
+        "max": 100,
+        "orientation": "horizontal"
+    },
+
+    // ── Brightness label ────────────────────────────────
+    "backlight": {
+        "device": "amd_backlight",
+        "format": "{icon} {percent}%",
+        "format-icons": ["󰋙", "󰃛", "󰃜", "󰃝", "󰃞", "󰃟", "󰃠"],
+        "tooltip": false
+    },
+
+    // ── Brightness slider ───────────────────────────────
+    "backlight/slider": {
+        "min": 10,
+        "max": 100,
+        "orientation": "horizontal",
+        "device": "amd_backlight"
+    },
+
+    // ── Battery ─────────────────────────────────────────
+    "battery": {
+        "states": {
+            "warning":  30,
+            "critical": 15
+        },
+        "format": "{icon} {capacity}%",
+        "format-charging": "󰂄 Charging {capacity}%",
+        "format-plugged":  "󰚥 Plugged {capacity}%",
+        "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+        "tooltip-format": "{timeTo}"
+    }
+}
+
