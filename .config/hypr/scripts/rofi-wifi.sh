@@ -2,7 +2,7 @@
 # ~/.config/hypr/scripts/rofi-wifi.sh
 
 ROFI_CMD="rofi -dmenu -theme ~/.config/rofi/network.rasi"
-INTERFACE="wlp4s0"
+INTERFACE="wlan0"
 
 # ── Helpers ───────────────────────────────────────────────────
 wifi_enabled() {
@@ -185,4 +185,3 @@ main() {
 }
 
 main
-
