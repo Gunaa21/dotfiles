@@ -31,8 +31,11 @@ get_devices() {
 toggle_power() {
     if bt_power; then
         bt "power off"
+        rfkill block bluetooth
         notify-send "󰂲 Bluetooth" "Bluetooth turned off"
     else
+        rfkill unblock bluetooth
+        sleep 0.5
         bt "power on"
         notify-send "󰂯 Bluetooth" "Bluetooth turned on"
     fi
@@ -157,4 +160,3 @@ main() {
 }
 
 main
-
