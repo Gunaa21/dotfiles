@@ -32,8 +32,8 @@
     min_icon_size = 32
     max_icon_size = 48
 
-    # Timing (in ms)
-    timeout = 5000
+    # Timing (in s)
+    timeout = 5s
 
     # Misc
     markup = full
@@ -65,51 +65,51 @@
     background = "#1e1e2e"
     foreground = "#cdd6f4"
     frame_color = "#313244"
-    timeout = 4000
+    timeout = 4s
 
 [urgency_normal]
     background = "#1e1e2e"
     foreground = "#cdd6f4"
     frame_color = "#313244"
-    timeout = 5000
+    timeout = 5s
 
 [urgency_critical]
     background = "#1e1e2e"
     foreground = "#f38ba8"
     frame_color = "#f38ba8"
-    timeout = 0
+    timeout = 8s
 
 [volume]
     appname = "Volume"
     background = "#1e1e2e"
     foreground = "#f9e2af"
     frame_color = "#f9e2af"
-    timeout = 2000
+    timeout = 2s
 
 [brightness]
     appname = "Brightness"
     background = "#1e1e2e"
     foreground = "#89b4fa"
     frame_color = "#89b4fa"
-    timeout = 2000
+    timeout = 2s
 
 [screenshot]
     appname = "Screenshot"
     background = "#1e1e2e"
     foreground = "#a6e3a1"
     frame_color = "#a6e3a1"
-    timeout = 3000
+    timeout = 3s
 
 [battery_warning]
     appname = "Battery"
     background = "#1e1e2e"
     foreground = "#fab387"
     frame_color = "#fab387"
+    timeout=4s
 
 [battery_critical]
     appname = "Battery Critical"
     background = "#1e1e2e"
     foreground = "#f38ba8"
     frame_color = "#f38ba8"
-    timeout = 0
-
+    timeout = 8s
