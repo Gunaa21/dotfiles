@@ -1,0 +1,254 @@
+debug {
+    render-drm-device "/dev/dri/renderD128"
+    ignore-drm-device "/dev/dri/renderD129"
+}
+
+input {
+    keyboard {
+        xkb {
+            // add your layout here if needed
+        }
+        numlock
+    }
+
+    touchpad {
+        tap
+        natural-scroll
+        // dwt  // disable-while-typing, uncomment if you want
+    }
+
+    mouse {
+        // natural-scroll
+    }
+}
+
+output "eDP-1" {
+    mode "1920x1080@144.001"  // change to your actual refresh rate
+    scale 1.0
+    transform "normal"
+}
+
+layout {
+    gaps 8
+
+    center-focused-column "never"
+
+    preset-column-widths {
+        proportion 0.33333
+        proportion 0.5
+        proportion 0.66667
+    }
+
+    default-column-width { proportion 0.5; }
+
+    focus-ring {
+        width 2
+        active-color "#33ccff"
+        inactive-color "#595959"
+        // gradient like your hyprland active border:
+        // active-gradient from="#33ccffee" to="#00ff99ee" angle=45
+    }
+
+    border {
+        off
+        width 2
+        active-color "#33ccff"
+        inactive-color "#595959"
+    }
+
+    shadow {
+        // on
+        softness 4
+        spread 1
+        offset x=0 y=2
+        color "#1a1a1aee"
+    }
+}
+
+// ── Startup ──────────────────────────────────────────────────
+spawn-at-startup "waybar"
+spawn-at-startup "dunst"
+spawn-at-startup "swaybg" "-i" "/home/gunaa/Pictures/Wallpapers/wallpaper1.jpeg"
+spawn-at-startup "gnome-keyring-daemon" "--start" "--components=secrets"
+spawn-at-startup "/usr/lib/polkit-kde-authentication-agent-1"
+spawn-at-startup "/usr/lib/gvfsd"
+spawn-sh-at-startup "cliphist load"
+spawn-sh-at-startup "~/.config/hypr/scripts/clipboard.sh"
+spawn-sh-at-startup "~/.config/hypr/scripts/battery-monitor.sh"
+spawn-sh-at-startup "~/.config/hypr/scripts/my-startup.sh"
+
+screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+
+animations {
+    // Niri has simpler animations than Hyprland, defaults are fine
+}
+
+// ── Window Rules ─────────────────────────────────────────────
+window-rule {
+    match app-id="brave-browser"
+    opacity 1.0  // opaque, overrides any global opacity
+}
+
+window-rule {
+    match app-id="org.kde.dolphin"
+    open-floating true
+    open-on-workspace "4"
+    // niri will center floating windows by default
+}
+
+// Firefox PiP floating
+window-rule {
+    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+    open-floating true
+}
+
+// ── Keybinds ─────────────────────────────────────────────────
+binds {
+    // Show hotkey overlay
+    Mod+Shift+Slash { show-hotkey-overlay; }
+
+    // ── Apps ─────────────────────────────────────────────────
+    Mod+Return { spawn "alacritty"; }
+    Mod+D      { spawn-sh "rofi -show drun"; }
+    Mod+E      { spawn "dolphin"; }
+    Mod+B      { spawn "firefox"; }
+
+    // ── Lock / Exit ──────────────────────────────────────────
+    Mod+L        { spawn "swaylock"; }
+    Mod+Shift+E  { quit; }
+    Ctrl+Alt+Delete { quit; }
+
+    // ── Window management ────────────────────────────────────
+    Mod+Q        { close-window; }
+    Mod+F        { fullscreen-window; }
+    Mod+Space    { toggle-window-floating; }
+    Mod+Shift+V  { switch-focus-between-floating-and-tiling; }
+    Mod+Shift+P  { power-off-monitors; }
+    Mod+O        { toggle-overview; }
+
+    // ── Focus (arrow keys) ───────────────────────────────────
+    Mod+Left  { focus-column-left; }
+    Mod+Right { focus-column-right; }
+    Mod+Up    { focus-window-up; }
+    Mod+Down  { focus-window-down; }
+
+    // ── Move windows (Shift+Arrow = swapwindow equivalent) ───
+    Mod+Shift+Left  { move-column-left; }
+    Mod+Shift+Right { move-column-right; }
+    Mod+Shift+Up    { move-window-up; }
+    Mod+Shift+Down  { move-window-down; }
+
+    // ── Column/window sizing ─────────────────────────────────
+    Mod+R          { switch-preset-column-width; }
+    Mod+Shift+R    { switch-preset-window-height; }
+    Mod+Minus      { set-column-width "-10%"; }
+    Mod+Equal      { set-column-width "+10%"; }
+    Mod+Shift+Minus { set-window-height "-10%"; }
+    Mod+Shift+Equal { set-window-height "+10%"; }
+    Mod+C          { center-column; }
+    Mod+Ctrl+F     { expand-column-to-available-width; }
+
+    // ── Workspaces ───────────────────────────────────────────
+    Mod+1 { focus-workspace 1; }
+    Mod+2 { focus-workspace 2; }
+    Mod+3 { focus-workspace 3; }
+    Mod+4 { focus-workspace 4; }
+    Mod+5 { focus-workspace 5; }
+
+    Mod+Shift+1 { move-column-to-workspace 1; }
+    Mod+Shift+2 { move-column-to-workspace 2; }
+    Mod+Shift+3 { move-column-to-workspace 3; }
+    Mod+Shift+4 { move-column-to-workspace 4; }
+    Mod+Shift+5 { move-column-to-workspace 5; }
+
+    Mod+Page_Down { focus-workspace-down; }
+    Mod+Page_Up   { focus-workspace-up; }
+
+    // ── Clipboard (cliphist + rofi) ──────────────────────────
+    Mod+V { spawn-sh "cliphist list | rofi -dmenu -i -p 'Clipboard: ' | cliphist decode | wl-copy"; }
+
+    // ── Wallpaper picker ─────────────────────────────────────
+    Mod+W { spawn-sh "~/.config/hypr/scripts/rofi-wallpaper.sh"; }
+
+    // ── WiFi / Bluetooth ─────────────────────────────────────
+    Mod+Shift+W { spawn-sh "~/.config/hypr/scripts/rofi-wifi.sh"; }
+    Mod+Shift+B { spawn-sh "~/.config/hypr/scripts/rofi-bluetooth.sh"; }
+
+    // ── Volume ───────────────────────────────────────────────
+    XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"; }
+    XF86AudioMute        allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"; }
+    XF86AudioMicMute     allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"; }
+
+    XF86AudioPlay  allow-when-locked=true { spawn-sh "playerctl play-pause"; }
+    XF86AudioStop  allow-when-locked=true { spawn-sh "playerctl stop"; }
+    XF86AudioPrev  allow-when-locked=true { spawn-sh "playerctl previous"; }
+    XF86AudioNext  allow-when-locked=true { spawn-sh "playerctl next"; }
+
+    // ── Brightness ───────────────────────────────────────────
+    XF86MonBrightnessUp   allow-when-locked=true { spawn-sh "brightnessctl -d amdgpu_bl0 s +5%"; }
+    XF86MonBrightnessDown allow-when-locked=true { spawn-sh "brightnessctl -d amdgpu_bl0 s 5%-"; }
+
+    // ── Screenshots ──────────────────────────────────────────
+    // Full screen → saved
+    Print { spawn-sh "grim ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%S).png && notify-send '󰄀 Screenshot' 'Full screen saved'"; }
+    // Region → saved
+    Shift+Print { spawn-sh "grim -g \"$(slurp)\" ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%S).png && notify-send '󰄀 Screenshot' 'Region saved'"; }
+    // Full screen → clipboard
+    Ctrl+Print { spawn-sh "grim - | wl-copy && notify-send '󰄀 Screenshot' 'Full screen copied to clipboard'"; }
+    // Region → clipboard
+    Ctrl+Shift+Print { spawn-sh "grim -g \"$(slurp)\" - | wl-copy && notify-send '󰄀 Screenshot' 'Region copied to clipboard'"; }
+
+    // ── Keyboard shortcut inhibit (for KVM use) ──────────────
+    Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
+
+
+    // ── Column stacking (put two windows in same column) ─────
+    // Pull window from right column into bottom of focused column
+    Mod+Comma  { consume-window-into-column; }
+    // Push bottom window of column out to the right as its own column
+    Mod+Period { expel-window-from-column; }
+    // Consume/expel from either side
+    Mod+BracketLeft  { consume-or-expel-window-left; }
+    Mod+BracketRight { consume-or-expel-window-right; }
+
+    // ── Tabbed column (windows as vertical tabs in a column) ──
+    // Toggle between stacked and tabbed view for current column
+    Mod+T { toggle-column-tabbed-display; }
+    // Note: Mod+T was alacritty in your config, you can change either
+
+    // ── Column/window navigation extras ──────────────────────
+    // Jump to very first or very last column on workspace
+    Mod+Home { focus-column-first; }
+    Mod+End  { focus-column-last; }
+    // Move focused column to first or last position
+    Mod+Ctrl+Home { move-column-to-first; }
+    Mod+Ctrl+End  { move-column-to-last; }
+
+    // ── Workspace extras ─────────────────────────────────────
+    // Switch to previous workspace (like alt-tab for workspaces)
+    Mod+Tab { focus-workspace-previous; }
+
+    // ── Resize with keyboard (fine-grained) ──────────────────
+    Mod+Ctrl+Minus { set-window-height "-10%"; }
+    Mod+Ctrl+Equal { set-window-height "+10%"; }
+    // Reset window height back to auto (useful after manual resize)
+    Mod+Ctrl+R { reset-window-height; }
+    // Center all visible columns, not just the focused one
+    Mod+Ctrl+C { center-visible-columns; }
+
+    // ── Scroll through columns with mouse wheel ───────────────
+    // Switch workspace with Mod+Scroll
+    Mod+WheelScrollDown cooldown-ms=150 { focus-workspace-down; }
+    Mod+WheelScrollUp   cooldown-ms=150 { focus-workspace-up; }
+    // Move column to workspace with Mod+Ctrl+Scroll
+    Mod+Ctrl+WheelScrollDown cooldown-ms=150 { move-column-to-workspace-down; }
+    Mod+Ctrl+WheelScrollUp   cooldown-ms=150 { move-column-to-workspace-up; }
+    // Scroll through columns horizontally with Mod+Shift+Scroll
+    Mod+Shift+WheelScrollDown { focus-column-right; }
+    Mod+Shift+WheelScrollUp   { focus-column-left; }
+
+    // ── Reload config without restarting ─────────────────────
+    Mod+Ctrl+Shift+R { spawn-sh "niri msg action reload-config && notify-send 'Niri' 'Config    reloaded'"; }
+}
+
